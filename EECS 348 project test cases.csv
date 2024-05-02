@@ -18,3 +18,4 @@ TC11,Unexpected characters,((T&T)@(T@T)True)],ERROR,ERROR,Pass,
 TC12,Invalid characters/ uninitialized variable,y|n,ERROR,ERROR,Pass,
 TC13,Spacing,T & F (spaced out),F,T,Fail,
 TC14,Inconsistent capitalization,(T&F)|t,T,ERROR,Fail,
+TC15,Unidentified operator,T*T,ERROR,ERROR,Pass
