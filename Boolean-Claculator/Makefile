@@ -1,16 +1,37 @@
-all: main
+# Makefile
 
-CXX = clang++
-override CXXFLAGS += -g -Wmost -Werror
+# Compiler to use
+CXX = g++
 
-SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.cpp' -print | sed -e 's/ /\\ /g')
-HEADERS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.h' -print)
+# Compiler flags
+CXXFLAGS = -Wall -g
 
-main: $(SRCS) $(HEADERS)
-	$(CXX) $(CXXFLAGS) $(SRCS) -o "$@"
+# Header files directory
+INCLUDES = -I.
 
-main-debug: $(SRCS) $(HEADERS)
-	$(CXX) $(CXXFLAGS) -U_FORTIFY_SOURCE -O0 $(SRCS) -o "$@"
+# Source files
+SOURCES = main.cpp errorHandler.cpp expression.cpp historyLog.cpp UI.cpp
 
+# Object files to generate
+OBJECTS = $(SOURCES:.cpp=.o)
+
+# Executable to build
+EXECUTABLE = myprogram
+
+# Default target
+all: $(EXECUTABLE)
+
+# Linking all the object files to create the executable
+$(EXECUTABLE): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
+# Rule to create object files from source files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+# Clean up all compiled files
 clean:
-	rm -f main main-debug
+	rm -f $(OBJECTS) $(EXECUTABLE)
+
+# Dependency rule for header files changes
+%.o: %.h
